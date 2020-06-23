@@ -17,6 +17,9 @@ use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * Class EditCommandTest
+ */
 class EditCommandTest extends TestCase
 {
     private const INITIAL_TAX_RATE = 8;

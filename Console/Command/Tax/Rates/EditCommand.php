@@ -14,6 +14,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class EditCommand
+ */
 class EditCommand extends Command
 {
     private const OPTION_UPDATE_TITLES = 'update-titles';
@@ -25,6 +28,11 @@ class EditCommand extends Command
      */
     private $taxRateRepository;
 
+    /**
+     * EditCommand constructor.
+     *
+     * @param TaxRateRepositoryInterface $taxRateRepository
+     */
     public function __construct(TaxRateRepositoryInterface $taxRateRepository)
     {
         parent::__construct();
@@ -56,6 +64,12 @@ class EditCommand extends Command
             );
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $taxRateIds   = explode(',', $input->getOption(self::OPTION_IDS));
@@ -82,6 +96,14 @@ class EditCommand extends Command
         return 0;
     }
 
+    /**
+     * @param OutputInterface  $output
+     * @param TaxRateInterface $taxRate
+     * @param float            $newRate
+     * @param bool             $updateTitles
+     *
+     * @return bool
+     */
     private function editTaxRate(
         OutputInterface $output,
         TaxRateInterface $taxRate,
@@ -105,6 +127,10 @@ class EditCommand extends Command
         return true;
     }
 
+    /**
+     * @param TaxRateInterface $taxRate
+     * @param int              $newRate
+     */
     private function updateTitlesForTaxRate(TaxRateInterface $taxRate, int $newRate): void
     {
         // assumption: everyone writes the tax rate without decimal places in their code / title
