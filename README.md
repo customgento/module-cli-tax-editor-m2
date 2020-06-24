@@ -9,8 +9,8 @@ Magento 2 module, which provides new console commands to edit the tax configurat
 
 #### Options
 
-`--ids`            Comma-separated list of tax rate IDs.
+`--ids`            Comma-separated list of tax rate IDs
 
-`--rate`           The new rate.
+`--rate`           The new rate (integer or float with decimal point)
 
-`--update-titles`  Update the code and the titles of the tax rate as well.
+`--update-titles`  Update the code and the titles of the tax rate as well
