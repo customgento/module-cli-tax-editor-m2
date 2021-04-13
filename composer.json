@@ -16,8 +16,7 @@
         "symfony/console": "~4.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.5",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "files": [
