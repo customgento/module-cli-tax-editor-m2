@@ -54,19 +54,19 @@ class EditCommandTest extends TestCase
         $newRate = 42;
 
         $taxRate = $this->getTaxRateByCode(self::INITIAL_TAX_CODE);
-        $this->assertEquals(self::INITIAL_TAX_RATE, $taxRate->getRate(), '', 0.0001);
-        $this->assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
+        self::assertEqualsWithDelta(self::INITIAL_TAX_RATE, $taxRate->getRate(), 0.0001, '');
+        self::assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute(['--ids' => $taxRate->getId(), '--rate' => $newRate]);
 
         $taxRate = $this->getTaxRateById((int)$taxRate->getId());
-        $this->assertEquals($newRate, $taxRate->getRate(), '', 0.0001);
-        $this->assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
+        self::assertEqualsWithDelta($newRate, $taxRate->getRate(), 0.0001, '');
+        self::assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
         $titles = $taxRate->getTitles();
-        $this->assertCount(1, $titles);
+        self::assertCount(1, $titles);
         $title = array_pop($titles);
-        $this->assertEquals(self::INITIAL_TAX_CODE, $title->getValue());
+        self::assertEquals(self::INITIAL_TAX_CODE, $title->getValue());
     }
 
     /**
@@ -76,22 +76,22 @@ class EditCommandTest extends TestCase
     public function testExecuteWithTitles(): void
     {
         $newRate = 42;
-        $newCode = str_replace(self::INITIAL_TAX_RATE, $newRate, self::INITIAL_TAX_CODE);
+        $newCode = str_replace((string)self::INITIAL_TAX_RATE, (string)$newRate, self::INITIAL_TAX_CODE);
 
         $taxRate = $this->getTaxRateByCode(self::INITIAL_TAX_CODE);
-        $this->assertEquals(self::INITIAL_TAX_RATE, $taxRate->getRate(), '', 0.0001);
-        $this->assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
+        self::assertEqualsWithDelta(self::INITIAL_TAX_RATE, $taxRate->getRate(), 0.0001, '');
+        self::assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute(['--ids' => $taxRate->getId(), '--rate' => $newRate, '--update-titles' => true]);
 
         $taxRate = $this->getTaxRateById((int)$taxRate->getId());
-        $this->assertEquals($newRate, $taxRate->getRate(), '', 0.0001);
-        $this->assertEquals($newCode, $taxRate->getCode());
+        self::assertEqualsWithDelta($newRate, $taxRate->getRate(), 0.0001, '');
+        self::assertEquals($newCode, $taxRate->getCode());
         $titles = $taxRate->getTitles();
-        $this->assertCount(1, $titles);
+        self::assertCount(1, $titles);
         $title = array_pop($titles);
-        $this->assertEquals($newCode, $title->getValue());
+        self::assertEquals($newCode, $title->getValue());
     }
 
     /**
@@ -104,7 +104,7 @@ class EditCommandTest extends TestCase
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('code', $taxRateCode)->create();
         $taxRatesList   = $this->taxRateRepository->getList($searchCriteria);
-        $this->assertEquals(1, $taxRatesList->getTotalCount());
+        self::assertEquals(1, $taxRatesList->getTotalCount());
         $taxRates = $taxRatesList->getItems();
         $taxRate  = array_pop($taxRates);
         // make sure the tax rate is fully loaded
