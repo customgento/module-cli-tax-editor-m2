@@ -1,6 +1,6 @@
 {
     "name": "customgento/module-cli-tax-editor-m2",
-    "description": "Magento 2 module, which provides new console commands to edit the tax configuration.",
+    "description": "CLI Tax Editor for Magento 2 adds a CLI command to update tax rates.",
     "type": "magento2-module",
     "license": "OSL-3.0",
     "authors": [
