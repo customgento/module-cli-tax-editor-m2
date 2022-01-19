@@ -1,5 +1,5 @@
-# CustomGento_CliTaxEditor
-Magento 2 module, which provides new console commands to edit the tax configuration.
+# CLI Tax Editor for Magento 2
+CLI Tax Editor for Magento 2 adds a CLI command to update tax rates. This is pretty useful for general tax rate changes in a country, which must be applied exactly at a specific date. It is possible to define a new rate for a range of tax rate IDs.
 
 ## Commands
 
