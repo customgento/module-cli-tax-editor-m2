@@ -109,13 +109,12 @@ class EditCommand extends Command
     {
         // assumption: everyone writes the tax rate without decimal places in their code / title
         // current shortcut: only integer tax rates are supported - this will not work for decimal tax rates
-        $oldRate = (int)$taxRate->getRate();
-        $newCode = str_replace($oldRate, $newRate, $taxRate->getCode());
+        $oldRate = (string)$taxRate->getRate();
+        $newCode = str_replace($oldRate, (string)$newRate, $taxRate->getCode());
         $taxRate->setCode($newCode);
 
-        $titles = $taxRate->getTitles();
-        foreach ($titles as $title) {
-            $newValue = str_replace($oldRate, $newRate, $title->getValue());
+        foreach ($taxRate->getTitles() as $title) {
+            $newValue = str_replace($oldRate, (string)$newRate, $title->getValue());
             $title->setValue($newValue);
         }
     }
