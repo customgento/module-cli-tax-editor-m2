@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: extdn/github-actions-m2/magento-phpstan@master
+      - uses: waleedbasit/github-actions-m2/magento-phpstan@add-elasticsearch7-to-install-config
         with:
           composer_name: customgento/module-cli-tax-editor-m2
