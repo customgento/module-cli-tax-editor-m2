@@ -1,7 +1,7 @@
 name: ExtDN M2 Integration Tests
 on: [ push, pull_request ]
 jobs:
-  integration-tests:
+  quick-integration-tests:
     name: Magento 2 Integration Tests
     runs-on: ubuntu-latest
     services:
