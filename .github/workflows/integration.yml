@@ -2,7 +2,7 @@ name: ExtDN M2 Integration Tests
 on: [ push, pull_request ]
 jobs:
   quick-integration-tests:
-    name: Magento 2 Integration Tests
+    name: Magento 2 Quick Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.3-p2 (PHP 7.4)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/7.4@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/7.4@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.3-p3 (PHP 7.4)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/7.4@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/7.4@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -41,7 +41,7 @@ jobs:
           composer_version: '2'
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.4 (PHP 7.4)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/7.4@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/7.4@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -49,7 +49,7 @@ jobs:
           composer_version: '2'
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.4 (PHP 8.1)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/8.1@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/8.1@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -57,7 +57,7 @@ jobs:
           composer_version: '2'
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.4-p1 (PHP 7.4)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/7.4@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/7.4@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -65,7 +65,7 @@ jobs:
           composer_version: '2'
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.4-p1 (PHP 8.1)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/8.1@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/8.1@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -73,7 +73,7 @@ jobs:
           composer_version: '2'
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.5 (PHP 8.1)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/8.1@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/8.1@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
@@ -81,7 +81,7 @@ jobs:
           composer_version: '2'
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 Version 2.4.6 (PHP 8.1)
-        uses: waleedbasit/github-actions-m2/magento-integration-tests/8.1@refactoring-entrypoint.sh
+        uses: waleedbasit/github-actions-m2/quick-magento-integration-tests/8.1@refactoring-entrypoint.sh
         with:
           module_name: CustomGento_CliTaxEditor
           composer_name: customgento/module-cli-tax-editor-m2
