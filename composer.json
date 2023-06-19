@@ -3,7 +3,6 @@
     "description": "CLI Tax Editor for Magento 2 adds a CLI command to update tax rates.",
     "type": "magento2-module",
     "license": "OSL-3.0",
-    "version": "1.0.5",
     "authors": [
         {
             "name": "Team CustomGento",
