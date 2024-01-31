@@ -2,7 +2,7 @@ name: ExtDN M2 Integration Tests
 on: [ push, pull_request ]
 jobs:
   integration-tests-2-4-4-p6-8-1:
-    name: Magento 2-4-4-p6 php 8-1 Integration Tests
+    name: Magento 2.4.4-p6 PHP 8.1 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -31,7 +31,7 @@ jobs:
           ce_version: '2.4.4-p6'
           composer_version: '2'
   integration-tests-2-4-4-p6-7-4:
-    name: Magento 2-4-4-p6 php 7-4 Integration Tests
+    name: Magento 2.4.4-p6 PHP 7.4 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -60,7 +60,7 @@ jobs:
           ce_version: '2.4.4-p6'
           composer_version: '2'
   integration-tests-2-4-4-p5-7-4:
-    name: Magento 2-4-4-p5 php 7-4 Integration Tests
+    name: Magento 2.4.4-p5 PHP 7.4 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -89,7 +89,7 @@ jobs:
           ce_version: '2.4.4-p5'
           composer_version: '2'
   integration-tests-2-4-4-p5-8-1:
-    name: Magento 2.4.4-p5 php 8.1 Integration Tests
+    name: Magento 2.4.4-p5 PHP 8.1 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -118,7 +118,7 @@ jobs:
           ce_version: '2.4.4-p5'
           composer_version: '2'
   integration-tests-2-4-5-p5-8-1:
-    name: Magento 2.4.5-p5 php 8.1 Integration Tests
+    name: Magento 2.4.5-p5 PHP 8.1 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -147,7 +147,7 @@ jobs:
           ce_version: '2.4.5-p5'
           composer_version: '2'
   integration-tests-2-4-5-p5-7-4:
-    name: Magento 2.4.5-p5 php 7.4 Integration Tests
+    name: Magento 2.4.5-p5 PHP 7.4 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -176,7 +176,7 @@ jobs:
           ce_version: '2.4.5-p5'
           composer_version: '2'
   integration-tests-2-4-5-p4-7-4:
-    name: Magento 2.4.5-p4 php 7.4 Integration Tests
+    name: Magento 2.4.5-p4 PHP 7.4 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -205,7 +205,7 @@ jobs:
           ce_version: '2.4.5-p4'
           composer_version: '2'
   integration-tests-2-4-5-p4-8-1:
-    name: Magento 2.4.5-p4 php 8.1 Integration Tests
+    name: Magento 2.4.5-p4 PHP 8.1 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -234,7 +234,7 @@ jobs:
           ce_version: '2.4.5-p4'
           composer_version: '2'
   integration-tests-2-4-6-p3-8-1:
-    name: Magento 2.4.6-p3 php 8.1 Integration Tests
+    name: Magento 2.4.6-p3 PHP 8.1 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -263,7 +263,7 @@ jobs:
           ce_version: '2.4.6-p3'
           composer_version: '2'
   integration-tests-2-4-6-p3-8-2:
-    name: Magento 2.4.6-p3 php 8.2 Integration Tests
+    name: Magento 2.4.6-p3 PHP 8.2 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -292,7 +292,7 @@ jobs:
           ce_version: '2.4.6-p3'
           composer_version: '2'
   integration-tests-2-4-6-p2-8-2:
-    name: Magento 2.4.6-p2 php 8.2 Integration Tests
+    name: Magento 2.4.6-p2 PHP 8.2 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -321,7 +321,7 @@ jobs:
           ce_version: '2.4.6-p2'
           composer_version: '2'
   integration-tests-2-4-6-p2-8-1:
-    name: Magento 2.4.6-p2 php 8.1 Integration Tests
+    name: Magento 2.4.6-p2 PHP 8.1 Integration Tests
     runs-on: ubuntu-latest
     services:
       mysql:
