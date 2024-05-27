@@ -1,7 +1,6 @@
 name: ExtDN M2 Integration Tests
 on: [ push, pull_request ]
-env:
-  HYVA_GITLAB_TOKEN: ${{ secrets.HYVA_GITLAB_TOKEN }}
+
 jobs:
   integration:
     uses: customgento/m2-github-actions/.github/workflows/integration.yml@main
