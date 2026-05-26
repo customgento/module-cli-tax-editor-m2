@@ -141,6 +141,7 @@ class EditCommandTest extends TestCase
 
         /** @var TaxRateTitleInterface $taxRateTitle */
         $taxRateTitle = $objectManager->create(TaxRateTitleInterfaceFactory::class)->create();
+        $taxRateTitle->setStoreId(1);
         $taxRateTitle->setValue(self::INITIAL_TAX_CODE);
         $taxRate->setTitles([$taxRateTitle]);
 
