@@ -113,7 +113,7 @@ class EditCommand extends Command
         $newCode = str_replace($oldRate, (string)$newRate, $taxRate->getCode());
         $taxRate->setCode($newCode);
 
-        foreach ($taxRate->getTitles() as $title) {
+        foreach ($taxRate->getTitles() ?? [] as $title) {
             $newValue = str_replace($oldRate, (string)$newRate, $title->getValue());
             $title->setValue($newValue);
         }
