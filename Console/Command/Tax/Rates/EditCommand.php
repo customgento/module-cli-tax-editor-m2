@@ -68,7 +68,7 @@ class EditCommand extends Command
                 $taxRate = $this->taxRateRepository->get((int)$taxRateId);
             } catch (NoSuchEntityException $e) {
                 $warning = '<warning>A tax rate with the ID %d does not exist.</warning>';
-                $output->writeln(sprintf($warning, [$taxRateId]));
+                $output->writeln(sprintf($warning, $taxRateId));
                 continue;
             }
             $oldRate = $taxRate->getRate();
@@ -97,7 +97,7 @@ class EditCommand extends Command
             $this->taxRateRepository->save($taxRate);
         } catch (InputException|Exception $e) {
             $error = '<error>The tax rate with the ID %d could not be saved.</error>';
-            $output->writeln(sprintf($error, [$taxRate->getId()]));
+            $output->writeln(sprintf($error, $taxRate->getId()));
 
             return false;
         }
