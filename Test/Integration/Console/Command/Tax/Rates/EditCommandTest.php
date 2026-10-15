@@ -64,8 +64,10 @@ class EditCommandTest extends TestCase
         self::assertEqualsWithDelta($newRate, $taxRate->getRate(), 0.0001, '');
         self::assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
         $titles = $taxRate->getTitles();
+        self::assertIsArray($titles);
         self::assertCount(1, $titles);
         $title = array_pop($titles);
+        self::assertNotNull($title);
         self::assertEquals(self::INITIAL_TAX_CODE, $title->getValue());
     }
 
@@ -89,8 +91,10 @@ class EditCommandTest extends TestCase
         self::assertEqualsWithDelta($newRate, $taxRate->getRate(), 0.0001, '');
         self::assertEquals($newCode, $taxRate->getCode());
         $titles = $taxRate->getTitles();
+        self::assertIsArray($titles);
         self::assertCount(1, $titles);
         $title = array_pop($titles);
+        self::assertNotNull($title);
         self::assertEquals($newCode, $title->getValue());
     }
 
@@ -107,8 +111,9 @@ class EditCommandTest extends TestCase
         self::assertEquals(1, $taxRatesList->getTotalCount());
         $taxRates = $taxRatesList->getItems();
         $taxRate  = array_pop($taxRates);
+        self::assertNotNull($taxRate);
         // make sure the tax rate is fully loaded
-        $taxRate = $this->taxRateRepository->get($taxRate->getId());
+        $taxRate = $this->taxRateRepository->get((int)$taxRate->getId());
 
         return $this->getTaxRateById((int)$taxRate->getId());
     }
@@ -141,7 +146,7 @@ class EditCommandTest extends TestCase
 
         /** @var TaxRateTitleInterface $taxRateTitle */
         $taxRateTitle = $objectManager->create(TaxRateTitleInterfaceFactory::class)->create();
-        $taxRateTitle->setStoreId(0);
+        $taxRateTitle->setStoreId('0');
         $taxRateTitle->setValue(self::INITIAL_TAX_CODE);
         $taxRate->setTitles([$taxRateTitle]);
 
