@@ -58,9 +58,20 @@ class EditCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $taxRateIds   = explode(',', $input->getOption(self::OPTION_IDS));
-        $taxRateIds   = array_filter(array_map('trim', $taxRateIds));
-        $newRate      = (float)$input->getOption(self::OPTION_RATE);
+        $taxRateIds = $this->parseTaxRateIds($input->getOption(self::OPTION_IDS));
+        if ($taxRateIds === null) {
+            $output->writeln('<error>The option --ids requires a comma-separated list of tax rate IDs.</error>');
+
+            return Command::FAILURE;
+        }
+
+        $newRate = $this->parseRate($input->getOption(self::OPTION_RATE));
+        if ($newRate === null) {
+            $output->writeln('<error>The option --rate requires a numeric value of 0 or greater.</error>');
+
+            return Command::FAILURE;
+        }
+
         $updateTitles = (bool)$input->getOption(self::OPTION_UPDATE_TITLES);
 
         foreach ($taxRateIds as $taxRateId) {
@@ -79,7 +90,52 @@ class EditCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
+    }
+
+    /**
+     * @param mixed $ids
+     * @return string[]|null
+     */
+    private function parseTaxRateIds($ids): ?array
+    {
+        if (!is_string($ids)) {
+            return null;
+        }
+
+        $taxRateIds = array_filter(array_map('trim', explode(',', $ids)), static function (string $id): bool {
+            return $id !== '';
+        });
+        if ($taxRateIds === []) {
+            return null;
+        }
+
+        foreach ($taxRateIds as $taxRateId) {
+            if (!ctype_digit($taxRateId) || (int)$taxRateId < 1) {
+                return null;
+            }
+        }
+
+        return $taxRateIds;
+    }
+
+    /**
+     * @param mixed $rate
+     */
+    private function parseRate($rate): ?float
+    {
+        if (!is_string($rate) || !is_numeric($rate)) {
+            return null;
+        }
+
+        $rate = (float)$rate;
+
+        return is_finite($rate) && $rate >= 0 ? $rate : null;
+    }
+
+    private function formatRate(float $rate): string
+    {
+        return rtrim(rtrim(number_format($rate, 4, '.', ''), '0'), '.');
     }
 
     private function editTaxRate(
@@ -89,7 +145,7 @@ class EditCommand extends Command
         bool $updateTitles = false
     ): bool {
         if ($updateTitles) {
-            $this->updateTitlesForTaxRate($taxRate, (int)$newRate);
+            $this->updateTitlesForTaxRate($taxRate, $newRate);
         }
         $taxRate->setRate($newRate);
 
@@ -105,16 +161,15 @@ class EditCommand extends Command
         return true;
     }
 
-    private function updateTitlesForTaxRate(TaxRateInterface $taxRate, int $newRate): void
+    private function updateTitlesForTaxRate(TaxRateInterface $taxRate, float $newRate): void
     {
-        // assumption: everyone writes the tax rate without decimal places in their code / title
-        // current shortcut: only integer tax rates are supported - this will not work for decimal tax rates
-        $oldRate = (string)$taxRate->getRate();
-        $newCode = str_replace($oldRate, (string)$newRate, $taxRate->getCode());
+        $oldRate = $this->formatRate((float)$taxRate->getRate());
+        $newRate = $this->formatRate($newRate);
+        $newCode = str_replace($oldRate, $newRate, $taxRate->getCode());
         $taxRate->setCode($newCode);
 
         foreach ($taxRate->getTitles() ?? [] as $title) {
-            $newValue = str_replace($oldRate, (string)$newRate, $title->getValue());
+            $newValue = str_replace($oldRate, $newRate, $title->getValue());
             $title->setValue($newValue);
         }
     }
