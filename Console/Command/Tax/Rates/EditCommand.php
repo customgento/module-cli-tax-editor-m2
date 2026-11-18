@@ -97,6 +97,9 @@ class EditCommand extends Command
     private function parseTaxRateIds($ids): array
     {
         $error = 'The option --ids requires a comma-separated list of tax rate IDs.';
+        if (is_int($ids)) {
+            $ids = (string)$ids;
+        }
         if (!is_string($ids)) {
             throw new InvalidOptionException($error);
         }
@@ -123,7 +126,7 @@ class EditCommand extends Command
      */
     private function parseRate($rate): float
     {
-        if (is_string($rate) && is_numeric($rate)) {
+        if (is_int($rate) || is_float($rate) || (is_string($rate) && is_numeric($rate))) {
             $rate = (float)$rate;
             if (is_finite($rate) && $rate >= 0) {
                 return $rate;

@@ -61,6 +61,19 @@ class EditCommandTest extends TestCase
         self::assertSame(Command::SUCCESS, $status);
     }
 
+    public function testNonStringOptionValuesAreAccepted(): void
+    {
+        $taxRate = $this->createTaxRate(8.0, 'Rate 8%');
+        $taxRate->expects(self::exactly(2))->method('setRate')->with(42.0);
+        $repository = $this->createMock(TaxRateRepositoryInterface::class);
+        $repository->method('get')->with(1)->willReturn($taxRate);
+        $repository->expects(self::exactly(2))->method('save')->with($taxRate);
+        $commandTester = new CommandTester(new EditCommand($repository));
+
+        self::assertSame(Command::SUCCESS, $commandTester->execute(['--ids' => 1, '--rate' => 42]));
+        self::assertSame(Command::SUCCESS, $commandTester->execute(['--ids' => 1, '--rate' => 42.0]));
+    }
+
     public function testUpdateTitlesKeepsDecimalPlaces(): void
     {
         $cases = [
