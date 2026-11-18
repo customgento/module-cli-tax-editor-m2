@@ -10,6 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Tax\Api\Data\TaxRateInterface;
 use Magento\Tax\Api\TaxRateRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,9 +59,15 @@ class EditCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $taxRateIds   = explode(',', $input->getOption(self::OPTION_IDS));
-        $taxRateIds   = array_filter(array_map('trim', $taxRateIds));
-        $newRate      = (float)$input->getOption(self::OPTION_RATE);
+        try {
+            $taxRateIds = $this->parseTaxRateIds($input->getOption(self::OPTION_IDS));
+            $newRate = $this->parseRate($input->getOption(self::OPTION_RATE));
+        } catch (InvalidOptionException $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return Command::FAILURE;
+        }
+
         $updateTitles = (bool)$input->getOption(self::OPTION_UPDATE_TITLES);
 
         foreach ($taxRateIds as $taxRateId) {
@@ -79,7 +86,51 @@ class EditCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
+    }
+
+    /**
+     * @param mixed $ids
+     * @return string[]
+     * @throws InvalidOptionException
+     */
+    private function parseTaxRateIds($ids): array
+    {
+        $error = 'The option --ids requires a comma-separated list of tax rate IDs.';
+        if (!is_string($ids)) {
+            throw new InvalidOptionException($error);
+        }
+
+        $taxRateIds = array_filter(array_map('trim', explode(',', $ids)), static function (string $id): bool {
+            return $id !== '';
+        });
+        if ($taxRateIds === []) {
+            throw new InvalidOptionException($error);
+        }
+
+        foreach ($taxRateIds as $taxRateId) {
+            if (!ctype_digit($taxRateId) || (int)$taxRateId < 1) {
+                throw new InvalidOptionException($error);
+            }
+        }
+
+        return $taxRateIds;
+    }
+
+    /**
+     * @param mixed $rate
+     * @throws InvalidOptionException
+     */
+    private function parseRate($rate): float
+    {
+        if (is_string($rate) && is_numeric($rate)) {
+            $rate = (float)$rate;
+            if (is_finite($rate) && $rate >= 0) {
+                return $rate;
+            }
+        }
+
+        throw new InvalidOptionException('The option --rate requires a numeric value of 0 or greater.');
     }
 
     private function editTaxRate(
@@ -89,7 +140,7 @@ class EditCommand extends Command
         bool $updateTitles = false
     ): bool {
         if ($updateTitles) {
-            $this->updateTitlesForTaxRate($taxRate, (int)$newRate);
+            $this->updateTitlesForTaxRate($taxRate, $newRate);
         }
         $taxRate->setRate($newRate);
 
@@ -105,16 +156,15 @@ class EditCommand extends Command
         return true;
     }
 
-    private function updateTitlesForTaxRate(TaxRateInterface $taxRate, int $newRate): void
+    private function updateTitlesForTaxRate(TaxRateInterface $taxRate, float $newRate): void
     {
-        // assumption: everyone writes the tax rate without decimal places in their code / title
-        // current shortcut: only integer tax rates are supported - this will not work for decimal tax rates
-        $oldRate = (string)$taxRate->getRate();
-        $newCode = str_replace($oldRate, (string)$newRate, $taxRate->getCode());
+        $oldRate = (string)(float)$taxRate->getRate();
+        $newRateText = (string)$newRate;
+        $newCode = str_replace($oldRate, $newRateText, $taxRate->getCode());
         $taxRate->setCode($newCode);
 
         foreach ($taxRate->getTitles() ?? [] as $title) {
-            $newValue = str_replace($oldRate, (string)$newRate, $title->getValue());
+            $newValue = str_replace($oldRate, $newRateText, $title->getValue());
             $title->setValue($newValue);
         }
     }
