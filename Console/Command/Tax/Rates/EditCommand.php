@@ -10,6 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Tax\Api\Data\TaxRateInterface;
 use Magento\Tax\Api\TaxRateRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,16 +59,11 @@ class EditCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $taxRateIds = $this->parseTaxRateIds($input->getOption(self::OPTION_IDS));
-        if ($taxRateIds === null) {
-            $output->writeln('<error>The option --ids requires a comma-separated list of tax rate IDs.</error>');
-
-            return Command::FAILURE;
-        }
-
-        $newRate = $this->parseRate($input->getOption(self::OPTION_RATE));
-        if ($newRate === null) {
-            $output->writeln('<error>The option --rate requires a numeric value of 0 or greater.</error>');
+        try {
+            $taxRateIds = $this->parseTaxRateIds($input->getOption(self::OPTION_IDS));
+            $newRate = $this->parseRate($input->getOption(self::OPTION_RATE));
+        } catch (InvalidOptionException $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return Command::FAILURE;
         }
@@ -95,24 +91,26 @@ class EditCommand extends Command
 
     /**
      * @param mixed $ids
-     * @return string[]|null
+     * @return string[]
+     * @throws InvalidOptionException
      */
-    private function parseTaxRateIds($ids): ?array
+    private function parseTaxRateIds($ids): array
     {
+        $error = 'The option --ids requires a comma-separated list of tax rate IDs.';
         if (!is_string($ids)) {
-            return null;
+            throw new InvalidOptionException($error);
         }
 
         $taxRateIds = array_filter(array_map('trim', explode(',', $ids)), static function (string $id): bool {
             return $id !== '';
         });
         if ($taxRateIds === []) {
-            return null;
+            throw new InvalidOptionException($error);
         }
 
         foreach ($taxRateIds as $taxRateId) {
             if (!ctype_digit($taxRateId) || (int)$taxRateId < 1) {
-                return null;
+                throw new InvalidOptionException($error);
             }
         }
 
@@ -121,16 +119,18 @@ class EditCommand extends Command
 
     /**
      * @param mixed $rate
+     * @throws InvalidOptionException
      */
-    private function parseRate($rate): ?float
+    private function parseRate($rate): float
     {
-        if (!is_string($rate) || !is_numeric($rate)) {
-            return null;
+        if (is_string($rate) && is_numeric($rate)) {
+            $rate = (float)$rate;
+            if (is_finite($rate) && $rate >= 0) {
+                return $rate;
+            }
         }
 
-        $rate = (float)$rate;
-
-        return is_finite($rate) && $rate >= 0 ? $rate : null;
+        throw new InvalidOptionException('The option --rate requires a numeric value of 0 or greater.');
     }
 
     private function formatRate(float $rate): string
