@@ -133,11 +133,6 @@ class EditCommand extends Command
         throw new InvalidOptionException('The option --rate requires a numeric value of 0 or greater.');
     }
 
-    private function formatRate(float $rate): string
-    {
-        return rtrim(rtrim(number_format($rate, 4, '.', ''), '0'), '.');
-    }
-
     private function editTaxRate(
         OutputInterface $output,
         TaxRateInterface $taxRate,
@@ -163,13 +158,13 @@ class EditCommand extends Command
 
     private function updateTitlesForTaxRate(TaxRateInterface $taxRate, float $newRate): void
     {
-        $oldRate = $this->formatRate((float)$taxRate->getRate());
-        $newRate = $this->formatRate($newRate);
-        $newCode = str_replace($oldRate, $newRate, $taxRate->getCode());
+        $oldRate = (string)(float)$taxRate->getRate();
+        $newRateText = (string)$newRate;
+        $newCode = str_replace($oldRate, $newRateText, $taxRate->getCode());
         $taxRate->setCode($newCode);
 
         foreach ($taxRate->getTitles() ?? [] as $title) {
-            $newValue = str_replace($oldRate, $newRate, $title->getValue());
+            $newValue = str_replace($oldRate, $newRateText, $title->getValue());
             $title->setValue($newValue);
         }
     }
