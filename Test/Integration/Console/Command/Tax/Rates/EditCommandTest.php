@@ -58,7 +58,7 @@ class EditCommandTest extends TestCase
         self::assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
 
         $commandTester = new CommandTester($this->command);
-        $commandTester->execute(['--ids' => $taxRate->getId(), '--rate' => $newRate]);
+        $commandTester->execute(['--ids' => (string)$taxRate->getId(), '--rate' => (string)$newRate]);
 
         $taxRate = $this->getTaxRateById((int)$taxRate->getId());
         self::assertEqualsWithDelta($newRate, $taxRate->getRate(), 0.0001, '');
@@ -85,7 +85,11 @@ class EditCommandTest extends TestCase
         self::assertEquals(self::INITIAL_TAX_CODE, $taxRate->getCode());
 
         $commandTester = new CommandTester($this->command);
-        $commandTester->execute(['--ids' => $taxRate->getId(), '--rate' => $newRate, '--update-titles' => true]);
+        $commandTester->execute([
+            '--ids' => (string)$taxRate->getId(),
+            '--rate' => (string)$newRate,
+            '--update-titles' => true,
+        ]);
 
         $taxRate = $this->getTaxRateById((int)$taxRate->getId());
         self::assertEqualsWithDelta($newRate, $taxRate->getRate(), 0.0001, '');
